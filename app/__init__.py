@@ -9,4 +9,7 @@ def create_app():
     from .blueprints.main import main_bp
     app.register_blueprint(main_bp)
 
+    from .blueprints.shop import shop_bp
+    app.register_blueprint(shop_bp)
+
     return app
