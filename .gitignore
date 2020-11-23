@@ -1,0 +1,6 @@
+__pychace__
+.DS_Store
+*.pyc
+.env
+.vscode
+env
