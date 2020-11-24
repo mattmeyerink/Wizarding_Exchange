@@ -1,0 +1,16 @@
+{% extends 'auth_layout.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <h3>Login</h3>
+        <div class="col-md-4">
+            <form action="{{ url_for('authentication.login') }}" method="POST">
+                <div class="form-group">
+                    <input type="email" class="form-control" name="email" placeholder="Email">
+                </div>
+                <div class="form">
+                    <input type="password" class="form-control" name="password" placeholder="Password">
+                </div>
+            </form> 
+        </div>
+    </div>
+{% endblock content %}
