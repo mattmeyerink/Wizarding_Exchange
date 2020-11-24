@@ -47,3 +47,4 @@ class Product(db.Model):
             "description": self.description
         }
         return data
+        

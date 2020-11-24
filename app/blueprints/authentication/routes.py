@@ -8,7 +8,7 @@ from .forms import RegistrationForm
 def login():
     """Handle loging into the site."""
     # Check if login info was submitted
-    if request.method == "POST":
+    if flask.request.method == "POST":
         # Retrieve the form data from post request
         form_data = flask.request.form.to_dict()
         email = form_data.get("email")
@@ -31,7 +31,7 @@ def login():
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
     """Registers a new user to the db."""
-    form = RegistrationForm
+    form = RegistrationForm()
 
     # Check if the form object passed was submitted correctly
     if form.validate_on_submit():
