@@ -1,8 +1,11 @@
 {% extends 'auth_layout.html' %}
 {% block content %}
+<div class="col-md-4 offset-4 border border-dark" style="margin-top: 15%; padding: 25px 0px">
     <div class="row justify-content-center">
-        <h3>Register</h3>
-        <div class="col-md-4">
+        <h3>Create an Account</h3>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             {# {% for error in form.errors %}
                 <div class="alert alert-warning alert-dismissible fade show" role="alert">
                     <button class="close" type="button" data-dismiss="alert" aria-label="Close">
@@ -39,6 +42,10 @@
                 </div>
                 {{ form.submit(class="btn btn-primary btn-block") }}
             </form>
+            <div class="row justify-content-center" style="margin-top: 5px">
+                <strong>Already have an account? <a href="{{ url_for('authentication.login') }}">Sign In</a></strong>
+            </div>
         </div>
     </div>
+</div>
 {% endblock content %}

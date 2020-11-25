@@ -34,12 +34,16 @@
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('shop.show_category', category='dangerous') }}">Dangerous Items</a>
             </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('shop.show_cart') }}">Cart</a>
-            </li>
           </ul>
           {% if current_user.is_authenticated %}
-            <a class="btn btn-light" href="{{ url_for('authentication.logout') }}" role="button">Logout</a>
+            <a class="btn btn-light" href="{{ url_for('shop.show_cart') }}" role="button">
+              <span class="badge badge-light">
+                <i class="fas fa-shopping-cart" aria-hidden="true" style="margin-right: 10px"></i>
+                {{ cart_data["num_items"] }} | ${{ '%.2f' % cart_data["total"] }}
+              </span>
+            </a>
+            <a class="btn btn-light" href="{{ url_for('authentication.logout') }}" role="button"
+              style="margin-left: 10px">Logout</a>
           {% else %}
             <a class="btn btn-light" href="{{ url_for('authentication.login') }}" role="button">Login</a>
           {% endif %}

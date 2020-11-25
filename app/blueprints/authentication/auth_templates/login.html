@@ -1,8 +1,11 @@
 {% extends 'auth_layout.html' %}
 {% block content %}
+<div class="col-md-4 offset-4 border border-dark" style="margin-top: 20%; padding: 25px 0px">
     <div class="row justify-content-center">
         <h3>Login</h3>
-        <div class="col-md-4">
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-10">
             <form action="{{ url_for('authentication.login') }}" method="POST">
                 <div class="form-group">
                     <input type="email" class="form-control" name="email" placeholder="Email">
@@ -12,9 +15,14 @@
                 </div>
                 <input type="submit" class="btn btn-primary btn-block" value="Login">
             </form> 
-            <div class="row">
+            <div class="row justify-content-center" style="margin-top: 5px">
                 <strong>Don't have an account yet? <a href="{{ url_for('authentication.register') }}">Sign Up</a></strong>
+            </div>
+            <div class="row justify-content-center" style="margin-top: 5px">
+                <strong>Continue Browsing? <a href="{{ url_for('shop.show_all_items') }}">Return To Shop</a></strong>
             </div>
         </div>
     </div>
+</div>
+    
 {% endblock content %}

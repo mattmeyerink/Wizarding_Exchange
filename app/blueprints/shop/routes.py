@@ -1,7 +1,7 @@
 import flask
 from flask_login import login_required, current_user
 from app import db
-from .models import Product, Cart
+from .models import Product, Cart, get_user_cart_info
 from . import shop_bp
 from app.blueprints.authentication.models import User
 
@@ -11,7 +11,8 @@ def show_all_items():
     """Displays all of the items currently listed in the shop."""
     context = {
         "category": "All Products",
-        "products": Product.query.all()
+        "products": Product.query.all(),
+        "cart_data": get_user_cart_info()
     }
     return flask.render_template("item_display.html", **context)
 
@@ -20,7 +21,8 @@ def show_category(category):
     """Displays all of the items of a specific category."""
     context = {
         "category": category.title(),
-        "products": Product.query.filter_by(category=category).all()
+        "products": Product.query.filter_by(category=category).all(),
+        "cart_data": get_user_cart_info()
     }
     return flask.render_template("item_display.html", **context)
 
@@ -52,7 +54,8 @@ def show_cart():
 
     context = {
         "products": products,
-        "total": total
+        "total": total,
+        "cart_data": get_user_cart_info()
     }
     return flask.render_template("cart.html", **context)
 
@@ -102,3 +105,5 @@ def delete_cart():
     db.session.commit()
 
     return flask.redirect(flask.url_for('shop.show_cart'))
+
+

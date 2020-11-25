@@ -28,7 +28,7 @@ def login():
 
     return flask.render_template("login.html")
 
-@auth_bp.route("/register", methods=["GET", "POST"])
+@auth_bp.route("/registration", methods=["GET", "POST"])
 def register():
     """Registers a new user to the db."""
     form = RegistrationForm()

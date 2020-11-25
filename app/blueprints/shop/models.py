@@ -2,6 +2,7 @@
 import flask
 from datetime import datetime
 from app import db
+from flask_login import current_user
 
 
 class Product(db.Model):
@@ -69,3 +70,27 @@ class Cart(db.Model):
         for field in ["user_id", "product_id"]:
             if field in data:
                 setattr(self, field, data[field])
+
+def get_user_cart_info():
+    """Return a dict with num items/total in user's cart."""
+    # Ensure the current_user is authenticated
+    if not current_user.is_authenticated:
+        return None
+    
+    # Get the current user id
+    user_id = current_user.id 
+
+    # Get all of the products in their cart
+    cart_items = Cart.query.filter_by(user_id=user_id).all()
+    items_info = [Product.query.get(item.product_id) for item in cart_items]
+
+    # Determine the total for items in cart
+    total = 0
+    for item in items_info:
+        total += item.price
+    
+    cart_data = {
+        "total": total,
+        "num_items": len(cart_items)
+    }
+    return cart_data
