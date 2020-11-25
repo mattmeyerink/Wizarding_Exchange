@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
     def save(self):
         """Commit the user's information to the db."""
         db.session.add(self)
-        db.session.commit(self)
+        db.session.commit()
 
     def hash_passowrd(self, original_password):
         """Hash the input password to store in the db."""
@@ -34,7 +34,7 @@ class User(UserMixin, db.Model):
         """Create a new user from a dictionary of user info."""
         for field in ["first_name", "last_name", "email"]:
             if field in data:
-                setattr(self, field, data)
+                setattr(self, field, data[field])
         
 @login.user_loader
 def load_user(id):

@@ -1,7 +1,7 @@
 import flask
 from . import auth_bp
 from .models import User
-from flask_login import login_user, login_user, current_user
+from flask_login import login_user, logout_user, current_user
 from .forms import RegistrationForm
 
 @auth_bp.route("/login", methods=['GET', 'POST'])
@@ -15,10 +15,10 @@ def login():
         password = form_data.get("password")
 
         # Attempt to pull users information from the db
-        user = User.query.filter_by(eamil=email).first()
+        user = User.query.filter_by(email=email).first()
 
         # Check if the user in db and password input is correct
-        if user and user.check_hashed_password(password):
+        if user and user.check_password_hash(password):
             # Login the user and route them back to the main product page
             login_user(user)
             return flask.redirect(flask.url_for("shop.show_all_items"))
