@@ -2,6 +2,7 @@ import flask
 from flask_login import login_required, current_user
 from .models import Product
 from . import shop_bp
+from app.blueprints.authentication.models import User
 
 
 @shop_bp.route("/")
@@ -27,3 +28,21 @@ def show_category(category):
 def show_cart():
     """Display the cart of the logged in user."""
     return flask.render_template("cart.html")
+
+@shop_bp.route("/cart/add/<int:product_id>")
+@login_required
+def add_to_cart(product_id):
+    """Add the passed item to the cart as the current user."""
+    # Get the id of the current user
+    user_id = User.query.get(current_user.id).id
+
+    # Combine user/product ids as a cart object
+    data = {
+        "user_id": user_id,
+        "product_id": product_id
+    }
+    cart = Cart()
+    cart.from_dict(data)
+    cart.save()
+
+    return flask.redirect(flask.request.referrer)

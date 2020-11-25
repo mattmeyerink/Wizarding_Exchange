@@ -48,3 +48,24 @@ class Product(db.Model):
         }
         return data
         
+class Cart(db.Model):
+    """Class to represent items in all users shopping carts."""
+    __tablename__ = "cart"
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.ForeignKey('users.id'))
+    product_id = db.Column(db.ForeignKey('products.id'))
+
+    def __repr__(self):
+        from app.blueprints.authentication.models import User
+        return f"<{User.query.get(self.user_id).email}: {Product.query.get(self.product_id).name}>"
+
+    def save(self):
+        """Save the current cart item to the db."""
+        db.session.add(self)
+        db.session.commit()
+
+    def from_dict(self, data):
+        """Add data for a new cart item from dictionary."""
+        for field in ["user_id", "product_id"]:
+            if field in data:
+                setattr(self, field, data[field])
