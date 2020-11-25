@@ -26,6 +26,16 @@ def show_category(category):
     }
     return flask.render_template("item_display.html", **context)
 
+@shop_bp.route("/<int:product_id>")
+def display_product(product_id):
+    """Display screen for a single product."""
+    product = Product.query.get(product_id)
+    context = {
+        "product": product,
+        "cart_data": get_user_cart_info()
+    }
+    return flask.render_template("single_product_display.html", **context)
+
 @shop_bp.route("/cart")
 @login_required
 def show_cart():

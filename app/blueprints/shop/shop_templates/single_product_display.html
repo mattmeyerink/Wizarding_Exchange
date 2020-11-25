@@ -1,0 +1,18 @@
+{% extends 'shop_layout.html' %}
+{% block content %}
+    <div class="row justify-content-center">
+        <h2>{{ product.name }}</h2>
+    </div>
+    <div class="row justify-content-center">
+        <img class="img-fluid" src="{{ product.image }}"  alt="Oops">
+    </div>
+    <div class="row justify-content-center">
+        <p>${{ '%.2f' % product.price }}</p>
+    </div>
+    <div class="row justify-content-center">
+        <p>{{ product.description }}</p>
+    </div>
+    <div class="row justify-content-center">
+        <a class="btn btn-primary" role="button" href="{{ url_for('shop.add_to_cart', product_id=product.id) }}">Add to Cart</a>
+    </div>
+{% endblock content %}

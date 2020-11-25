@@ -8,18 +8,20 @@
             <div class="row justify-content-center">
                 {% for product in products %}
                 <div class="col-md-3" style="margin-left: 7%">
-                    <div class="row">
-                        <b><p>{{ product.name }}</p></b>
-                    </div>
-                    <div class="row">
-                        <img class="img-fluid" src="{{ product.image }}"  alt="Oops">
-                    </div>
-                    <div class="row">
-                        <p>${{ '%.2f' % product.price }}</p>
-                    </div>
-                    <div class="row">
-                        <p>{{ product.description }}</p>
-                    </div>
+                    <a href="{{ url_for('shop.display_product', product_id=product.id) }}">
+                        <div class="row">
+                            <b><p>{{ product.name }}</p></b>
+                        </div>
+                        <div class="row">
+                            <img class="img-fluid" src="{{ product.image }}"  alt="Oops">
+                        </div>
+                        <div class="row">
+                            <p>${{ '%.2f' % product.price }}</p>
+                        </div>
+                        <div class="row">
+                            <p>{{ product.description }}</p>
+                        </div>
+                    </a>
                     <div class="row">
                         <a class="btn btn-primary" role="button" href="{{ url_for('shop.add_to_cart', product_id=product.id) }}">Add to Cart</a>
                     </div>
