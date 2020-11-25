@@ -1,5 +1,6 @@
 import flask
 from flask_login import login_required, current_user
+from app import db
 from .models import Product, Cart
 from . import shop_bp
 from app.blueprints.authentication.models import User
@@ -34,7 +35,9 @@ def show_cart():
     # Consolidate the products array with a quantiy element
     products_count = {}
     products = []
+    total = 0
     for product in products_full:
+        total += product.price
         if product in products_count:
             products_count[product] += 1
         else:
@@ -46,9 +49,10 @@ def show_cart():
             "quantity": products_count[product]
             }
         )
-    print(products)
+
     context = {
-        "products": products
+        "products": products,
+        "total": total
     }
     return flask.render_template("cart.html", **context)
 
@@ -69,3 +73,32 @@ def add_to_cart(product_id):
     cart.save()
 
     return flask.redirect(flask.request.referrer)
+
+@shop_bp.route("/cart/delete/<int:product_id>")
+@login_required
+def delete_from_cart(product_id):
+    """Delete a specific item from the user's cart."""
+    # Get the id of the current user
+    user_id = User.query.get(current_user.id).id 
+
+    # Delete one instance of that product from the cart
+    product_to_delete = Cart.query.filter_by(user_id=user_id, product_id=product_id).first()
+    db.session.delete(product_to_delete)
+    db.session.commit()
+
+    return flask.redirect(flask.url_for('shop.show_cart'))
+
+@shop_bp.route("/cart/delete")
+@login_required
+def delete_cart():
+    """Delete all of the items from user's cart."""
+    # Get the id of the current user
+    user_id = User.query.get(current_user.id).id 
+
+    # Delete all of their products from the db
+    products_to_delete = Cart.query.filter_by(user_id=user_id).all()
+    for product in products_to_delete:
+        db.session.delete(product)
+    db.session.commit()
+
+    return flask.redirect(flask.url_for('shop.show_cart'))

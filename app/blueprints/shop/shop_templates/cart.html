@@ -1,21 +1,32 @@
 {% extends 'shop_layout.html' %}
 {% block content %}
-    <div class="row justify-content-center">
-        <h1>This will be the users cart</h1>
-        {% for product in products %}
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-3">
-                            <img src="{{ product['product'].image }}" alt="Oops" class="img-fluid">
-                        </div>
-            
-                        <p>{{ product['product'].name }}</p>
-                        <p>{{ product.quantity }}</p>
-                        <p>{{ product['product'].price * product.quantity }}</p>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
+<div class="row justify-content-center">
+    <h1>Your Cart</h1>
+</div>
+{% for product in products %}
+
+<nav class="navbar navbar-light bg-light border border-dark" style="margin-bottom: 10px">
+    <div class="navbar-brand">
+        <img src="{{ product['product'].image }}" height="75" alt="Ooops">
     </div>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+            <strong>{{ product['product'].name }}</strong>
+        </li>
+    </ul>
+    <strong>x{{ product.quantity }}</strong>
+    <strong style="margin-left: 50px">${{ '%.2f' % (product['product'].price * product.quantity) }}</strong>
+    <a href="{{ url_for('shop.delete_from_cart', product_id=product['product'].id) }}" style="margin-left: 25px">
+        <i class="fa fa-trash" style="color: #bf2222" aria-hidden="true"></i>
+    </a>
+
+</nav>
+{% endfor %}
+<nav class="navbar navbar-light" style="margin-bottom: 10px">
+    <ul class="navbar-nav mr-auto">
+        <a href="{{ url_for('shop.delete_cart') }}" class="nav-item btn btn-warning" role="button">Remove All Cart Items</a>
+    </ul>
+    <strong>Total: ${{ '%.2f' % total }}</strong>
+</nav>
+
 {% endblock content %}
