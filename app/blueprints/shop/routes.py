@@ -1,6 +1,6 @@
 import flask
 from flask_login import login_required, current_user
-from .models import Product
+from .models import Product, Cart
 from . import shop_bp
 from app.blueprints.authentication.models import User
 
@@ -27,7 +27,30 @@ def show_category(category):
 @login_required
 def show_cart():
     """Display the cart of the logged in user."""
-    return flask.render_template("cart.html")
+    # Query all of the products the current user has in their cart
+    users_cart_data = Cart.query.filter_by(user_id=current_user.id).all()
+    products_full = [Product.query.get(cart_item.product_id) for cart_item in users_cart_data]
+
+    # Consolidate the products array with a quantiy element
+    products_count = {}
+    products = []
+    for product in products_full:
+        if product in products_count:
+            products_count[product] += 1
+        else:
+            products_count[product] = 1
+    
+    for product in products_count:
+        products.append({
+            "product": product, 
+            "quantity": products_count[product]
+            }
+        )
+    print(products)
+    context = {
+        "products": products
+    }
+    return flask.render_template("cart.html", **context)
 
 @shop_bp.route("/cart/add/<int:product_id>")
 @login_required

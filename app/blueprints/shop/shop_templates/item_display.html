@@ -21,7 +21,7 @@
                         <p>{{ product.description }}</p>
                     </div>
                     <div class="row">
-                        <a class="btn btn-primary" role="button" href="{{ url_for('shop.show_all_items') }}">Add to Cart</a>
+                        <a class="btn btn-primary" role="button" href="{{ url_for('shop.add_to_cart', product_id=product.id) }}">Add to Cart</a>
                     </div>
                 </div>
                 {% endfor %}
