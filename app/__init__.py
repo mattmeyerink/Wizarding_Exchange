@@ -1,4 +1,5 @@
 import flask
+import stripe
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
@@ -27,6 +28,9 @@ def create_app():
 
     # Link the login
     login.init_app(app)
+
+    # Initialize the stripe API key
+    stripe.api_key = Config.STRIPE_SK_TEST
 
     # Register the blueprints
     from .blueprints.authentication import auth_bp

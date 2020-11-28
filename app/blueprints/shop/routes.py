@@ -1,4 +1,5 @@
 import flask
+import stripe
 from flask_login import login_required, current_user
 from app import db
 from .models import Product, Cart, get_user_cart_info
@@ -116,4 +117,21 @@ def delete_cart():
 
     return flask.redirect(flask.url_for('shop.show_cart'))
 
+@shop_bp.route("/checkout")
+@login_required
+def show_checkout():
+    """Display the checkout page to allow user to purchase cart items."""
+    # Test the Stripe payment setup
+    intent = stripe.PaymentIntent.create(
+        amount=1000,
+        currency="usd",
+        payment_method_types=["card"],
+        receipt_email="test.email@email.com"
+    )
+    
+    print(intent)
 
+    context = {
+        "cart_data": get_user_cart_info()
+    }
+    return flask.render_template("checkout.html", **context)

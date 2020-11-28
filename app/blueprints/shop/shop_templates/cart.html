@@ -24,9 +24,21 @@
 {% endfor %}
 <nav class="navbar navbar-light" style="margin-bottom: 10px">
     <ul class="navbar-nav mr-auto">
-        <a href="{{ url_for('shop.delete_cart') }}" class="nav-item btn btn-warning" role="button">Remove All Cart Items</a>
+        <li></li>
     </ul>
     <strong>Total: ${{ '%.2f' % total }}</strong>
+</nav>
+<nav class="navbar navbar-light" style="margin-bottom: 10px">
+    <ul class="navbar-nav mr-auto">
+        <li></li>
+    </ul>
+    <a href="{{ url_for('shop.delete_cart') }}" class="nav-item btn btn-warning" role="button">Remove All Cart Items</a>
+</nav>
+<nav class="navbar navbar-light" style="margin-bottom: 10px">
+    <ul class="navbar-nav mr-auto">
+        <li></li>
+    </ul>
+    <a href="{{ url_for('shop.show_checkout') }}" class="nav-item btn btn-success" role="button">Checkout</a>
 </nav>
 
 {% endblock content %}
