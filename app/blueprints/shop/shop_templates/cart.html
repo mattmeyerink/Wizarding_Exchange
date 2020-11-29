@@ -1,5 +1,9 @@
 {% extends 'shop_layout.html' %}
 {% block content %}
+
+<!-- JS for stripe checkout -->
+<script src="https://js.stripe.com/v3/"></script>
+
 <div class="row justify-content-center">
     <h1>Your Cart</h1>
 </div>
@@ -38,7 +42,38 @@
     <ul class="navbar-nav mr-auto">
         <li></li>
     </ul>
-    <a href="{{ url_for('shop.show_checkout') }}" class="nav-item btn btn-success" role="button">Checkout</a>
+    <button class="nav-item btn btn-success" id="checkout-button">Checkout</button>
 </nav>
+
+<!-- JS Script to handle checkout button click client-side -->
+<script type="text/javascript">
+    // Create instance of stripe object with public key
+    var stripe = Stripe('pk_test_51Hsa5TKfjUhu3I8RQzq9L9GmZzzHW9WhzyyryDAa9KOtX5mecLhQVnLgV4RC9PIWSlNXw2qE9vnLcOApygv37kc400LiVNB4z7');
+    var checkoutButton = document.getElementById('checkout-button');
+
+    // Reference server side route to create checkout session when button clicked
+    checkoutButton.addEventListener('click', function() {
+        fetch('/shop/create-checkout-session', {
+            method: 'POST',
+        })
+        .then(function(response) {
+            // Convert session info to a json format
+            return response.json();
+        })
+        .then(function(session) {
+            // Using that session redirect to the stripe checkout page
+            return stripe.redirectToCheckout({ sessionId: session.id});
+        })
+        .then(function(result) {
+            // Check if there were any errors and display those messages
+            if (result.error) {
+                alert(result.error.message);
+            }
+        })
+        .catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+</script>
 
 {% endblock content %}

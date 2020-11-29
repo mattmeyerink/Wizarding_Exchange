@@ -15,4 +15,6 @@ class Config:
 
     STRIPE_SK_TEST = os.getenv('STRIPE_SK_TEST')
     STRIPE_PK_TEST = os.getenv('STRIPE_PK_TEST')
+    STRIPE_SUCCESS_URL = os.getenv('STRIPE_SUCCESS_URL')
+    STRIPE_CANCEL_URL = os.getenv('STRIPE_CANCEL_URL')
     

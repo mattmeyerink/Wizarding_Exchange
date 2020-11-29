@@ -5,6 +5,7 @@ from app import db
 from .models import Product, Cart, get_user_cart_info
 from . import shop_bp
 from app.blueprints.authentication.models import User
+from app import Config
 
 
 @shop_bp.route("/")
@@ -117,21 +118,26 @@ def delete_cart():
 
     return flask.redirect(flask.url_for('shop.show_cart'))
 
-@shop_bp.route("/checkout")
+@shop_bp.route("/create-checkout-session", methods=["POST"])
 @login_required
 def show_checkout():
-    """Display the checkout page to allow user to purchase cart items."""
-    # Test the Stripe payment setup
-    intent = stripe.PaymentIntent.create(
-        amount=1000,
-        currency="usd",
+    """Route to the Stripe checkout page with the current user's cart."""
+    # Create the stripe session
+    session = stripe.checkout.Session.create(
         payment_method_types=["card"],
-        receipt_email="test.email@email.com"
+        line_items=[{
+            "price_data": {
+                "currency": "usd",
+                "product_data": {
+                    "name": "Wand",
+                },
+                "unit_amount": 50,
+            },
+            "quantity": 1
+        }],
+        mode="payment",
+        success_url=Config.STRIPE_SUCCESS_URL,
+        cancel_url=Config.STRIPE_CANCEL_URL
     )
-    
-    print(intent)
 
-    context = {
-        "cart_data": get_user_cart_info()
-    }
-    return flask.render_template("checkout.html", **context)
+    return flask.jsonify(id=session.id)
