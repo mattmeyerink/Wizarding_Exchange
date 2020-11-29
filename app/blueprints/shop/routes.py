@@ -108,7 +108,7 @@ def delete_from_cart(product_id):
 def delete_cart():
     """Delete all of the items from user's cart."""
     # Get the id of the current user
-    user_id = User.query.get(current_user.id).id 
+    user_id = User.query.get(current_user.id).id
 
     # Delete all of their products from the db
     products_to_delete = Cart.query.filter_by(user_id=user_id).all()
@@ -158,6 +158,7 @@ def show_checkout():
             "quantity": product["quantity"]
         })
 
+    
     # Create the stripe session
     session = stripe.checkout.Session.create(
         payment_method_types=["card"],
@@ -168,3 +169,17 @@ def show_checkout():
     )
 
     return flask.jsonify(id=session.id)
+
+@shop_bp.route("/checkout-success")
+def checkout_success():
+    """Display that the checkout was successful."""
+    # Get the current_user's id
+    user_id = User.query.get(current_user.id).id
+
+    Cart.query.filter_by(user_id=user_id).delete()
+    db.session.commit()
+
+    context = {
+        "cart_data": get_user_cart_info()
+    }
+    return flask.render_template("checkout_success.html", **context)
