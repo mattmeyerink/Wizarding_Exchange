@@ -122,19 +122,46 @@ def delete_cart():
 @login_required
 def show_checkout():
     """Route to the Stripe checkout page with the current user's cart."""
-    # Create the stripe session
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{
+    # Query all of the products the current user has in their cart
+    users_cart_data = Cart.query.filter_by(user_id=current_user.id).all()
+    products_full = [Product.query.get(cart_item.product_id) for cart_item in users_cart_data]
+
+    # Consolidate the products array with a quantiy element
+    products_count = {}
+    products = []
+    total = 0
+    for product in products_full:
+        total += product.price
+        if product in products_count:
+            products_count[product] += 1
+        else:
+            products_count[product] = 1
+    
+    for product in products_count:
+        products.append({
+            "product": product, 
+            "quantity": products_count[product]
+            }
+        )
+
+    # Create line_items format for products in person's cart
+    line_items = []
+    for product in products:
+        line_items.append({
             "price_data": {
                 "currency": "usd",
                 "product_data": {
-                    "name": "Wand",
+                    "name": product["product"].name
                 },
-                "unit_amount": 50,
+                "unit_amount": int(product["product"].price * 100),
             },
-            "quantity": 1
-        }],
+            "quantity": product["quantity"]
+        })
+
+    # Create the stripe session
+    session = stripe.checkout.Session.create(
+        payment_method_types=["card"],
+        line_items=line_items,
         mode="payment",
         success_url=Config.STRIPE_SUCCESS_URL,
         cancel_url=Config.STRIPE_CANCEL_URL
