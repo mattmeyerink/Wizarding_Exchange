@@ -144,6 +144,13 @@ def show_checkout():
             }
         )
 
+    # Set the tax rate for the sale
+    tax_rate = stripe.TaxRate.create(
+        display_name='Sales Tax',
+        inclusive=False,
+        percentage=6.25
+    )
+
     # Create line_items format for products in person's cart
     line_items = []
     for product in products:
@@ -155,7 +162,8 @@ def show_checkout():
                 },
                 "unit_amount": int(product["product"].price * 100),
             },
-            "quantity": product["quantity"]
+            "quantity": product["quantity"],
+            "tax_rates": [tax_rate.id]
         })
 
     
