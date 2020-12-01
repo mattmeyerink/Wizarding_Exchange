@@ -1,7 +1,7 @@
 .main_bg {
     background-image: url('../images/diagon_alley.jpg');
     background-position: center;
-    height: 750px;
+    height: 500px;
     background-size: cover;
     background-attachment: fixed;
 }
@@ -9,4 +9,18 @@
     background-color: white;
     margin-top: 23%;
     padding: 40px;
+}
+.register_bg {
+    background-image: url('../images/platform934.jpg');
+    background-position: center;
+    height: 500px;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.login_bg {
+    background-image: url('../images/hogwartsexpress.jpg');
+    background-position: center;
+    height: 500px;
+    background-size: cover;
+    background-attachment: fixed;
 }
