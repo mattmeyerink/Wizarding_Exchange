@@ -1,0 +1,12 @@
+.main_bg {
+    background-image: url('../images/diagon_alley.jpg');
+    background-position: center;
+    height: 750px;
+    background-size: cover;
+    background-attachment: fixed;
+}
+.card {
+    background-color: white;
+    margin-top: 23%;
+    padding: 40px;
+}

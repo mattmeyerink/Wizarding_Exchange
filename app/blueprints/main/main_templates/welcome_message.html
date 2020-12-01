@@ -8,17 +8,20 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
   </head>
-  <body>
-
-    <div class="row justify-content-center" style="margin-top: 25%">
-        <h1>Welcome to Wizarding Exchange!</h1>
+  <body class="main_bg">
+    <div class="col-md-6 offset-3 card">
+      <div class="row justify-content-center">
+        <h1 style="text-align: center">Welcome to Wizards Exchange!</h1>
+      </div>
+      <div class="row justify-content-center">
+        <a class="btn btn-primary" href="{{ url_for('shop.show_all_items') }} " role="button">
+          Enter the Shop
+        </a>
+      </div>
     </div>
-    <div class="row justify-content-center">
-      <a class="btn btn-primary" href="{{ url_for('shop.show_all_items') }} " role="button">
-        Enter the Shop
-      </a>
-    </div>
+    
     
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
